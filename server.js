@@ -14,28 +14,19 @@ var morgan       = require('morgan'); // logger logs everything that is happenin
 var cookieParser = require('cookie-parser');//remembers who you are
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
-
+//ADDED OBJECT ID AND REQUIRE
+var ObjectId = require('mongodb').ObjectID
 var configDB = require('./config/database.js');
 
 var db
 
 // configuration ===============================================================
-mongoose.connect(configDB.url, (err, database) => {
+mongoose.connect(configDB.url, { useNewUrlParser: true },(err, database) => {
   if (err) return console.log(err)
   db = database
-  require('./app/routes.js')(app, passport, db); //is a file made to hold the api , spits out a function
+  require('./app/routes.js')(app, passport, db, ObjectId); //is a file made to hold the api , spits out a function
 }); // connect to our database
 
-//app.listen(port, () => {
-    // MongoClient.connect(configDB.url, { useNewUrlParser: true }, (error, client) => {
-    //     if(error) {
-    //         throw error;
-    //     }
-    //     db = client.db(configDB.dbName);
-    //     console.log("Connected to `" + configDB.dbName + "`!");
-    //     require('./app/routes.js')(app, passport, db);
-    // });
-//});
 
 require('./config/passport')(passport); // pass passport for configuration
 

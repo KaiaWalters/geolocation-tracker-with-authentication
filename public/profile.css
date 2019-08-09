@@ -1,0 +1,67 @@
+html{
+  background-color: #EDE1D1;
+}
+
+#map {
+  border: 2px solid grey;
+  background-color: rgb(170,218,255);
+  position:absolute;
+  top:20px;
+  bottom:0;
+  width:50%;
+  height:70%;
+  margin-top: 30px;
+  float:left;
+ }
+
+.row{
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-column-gap: 10px;
+}
+.well{
+  background-color: floralwhite;
+  border:1px solid brown;
+  height: 630px;
+  padding: 10px;
+}
+/* TODO: change user profile picture to a img tag in the html*/
+.well section{
+  border: 1px solid grey;
+  height: 187px;
+  width: 100%;
+  /* margin: auto; */
+}
+.well section img{
+  height: 100%;
+  width:100%
+}
+/* .well section img{
+  border-radius: 100%;
+  height:100%;
+} */
+
+/* USER PROFILE ==============================================*/
+.userProfile{
+  background-color: white;
+  border:1px solid brown;
+  height: 630px;
+  padding: 10px;
+}
+/*TODO: Style inout boxes*/
+.userProfile form input{
+  float: left;
+  height: 10vh;
+  width: 74%;
+}
+
+.messages{
+  font-size: 24px;
+  border: 2px solid black;
+  height: 100px;
+  float:left;
+}
+
+
+
+/*   */
