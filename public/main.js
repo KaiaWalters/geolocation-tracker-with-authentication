@@ -93,3 +93,5 @@ Array.from(thumbDown).forEach(function(element) {
         })
       });
 });
+
+//toggle to make box appear
