@@ -15,7 +15,7 @@ var cookieParser = require('cookie-parser');//remembers who you are
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 //ADDED OBJECT ID AND REQUIRE
-var ObjectId = require('mongodb').ObjectID
+var ObjectId = require('mongodb').ObjectID;
 var configDB = require('./config/database.js');
 
 var db

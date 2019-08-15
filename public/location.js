@@ -2,6 +2,8 @@
 
 var input = document.getElementById("location")
 var tracker = document.getElementById("find")
+var submit = document.getElementById("submitBtn")
+mapboxgl.accessToken = 'pk.eyJ1IjoiaG9tZWdyb3duMjM0NSIsImEiOiJjanlzbm1kOXMwbndwM2VtaW8xZndmNW1jIn0.V4YGm7EKRWqdkQrwkE1vwg';
 
 
 
@@ -98,7 +100,6 @@ tracker.addEventListener('click', function(event) {
  * https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
  */
 
- mapboxgl.accessToken = 'pk.eyJ1IjoiaG9tZWdyb3duMjM0NSIsImEiOiJjanlzbm1kOXMwbndwM2VtaW8xZndmNW1jIn0.V4YGm7EKRWqdkQrwkE1vwg';
 
 var map = new mapboxgl.Map({
 container: 'map', // container id
@@ -107,12 +108,16 @@ center: [lti, lng], // starting position
 zoom: 3 // starting zoom
 });
 console.log(lng, lti, map);
-    alert("hello")
-map.addControl(new mapboxgl.GeolocateControl({
-positionOptions: {
-enableHighAccuracy: true
-},
-trackUserLocation: true
-}));
-getLocation(uid)
+
+
+
+  map.addControl(new mapboxgl.GeolocateControl({
+  positionOptions: {
+  enableHighAccuracy: true
+  },
+  trackUserLocation: true
+  }));
+  getLocation(uid)
+
+
 }) //end event

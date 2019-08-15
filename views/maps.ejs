@@ -19,8 +19,21 @@
     <div class='heading'>
       <h1>Our locations</h1>
     </div>
-    <div id='listings' class='listings'></div>
+    <div id='listings' class='listings'>
+
+    <% for (i = 0; i < features.length; i++) { %>
+
+      <ul class="listing">
+        <a class =" title item" href="#"><%= features[i].properties.who %></a>
+        <li><%= features[i].properties.message %></li>
+      </ul>
+
+    <% } %>
+
+    </div>
   </div>
+
+
 
 
 <script src="maps.js"></script>
