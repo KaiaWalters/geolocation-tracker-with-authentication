@@ -4,6 +4,7 @@
     <title>GeoGlyph</title>
     <link rel="stylesheet" href="profile.css">
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css' rel='stylesheet' />
 </head>
@@ -67,6 +68,9 @@
           <li class="message">
               <span><%= messages[i].name %></span>
               <span><%= messages[i].quote %></span>
+              <span><i class="fas fa-sun" aria-hidden="true"></i></span>
+              <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
           </li>
         <% } %>
       </ul>

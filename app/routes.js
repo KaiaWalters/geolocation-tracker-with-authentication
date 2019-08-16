@@ -16,14 +16,13 @@ module.exports = function(app, passport, db, ObjectId) {
     db.collection('users').find({
       "_id": uId
     }).toArray((err, result) => {
-      console.log('THIS IS SPARTAAAAAAAAGSGAGGGAG', result[0])
-
+      console.log('THIS IS SPARTAAAAAAAAGSGAGGGAG', uId, result[0])
       if (err) return console.log(err)
-      //My collection with messages
-      // console.log(req.body.name)
+      uName = result[0].local.username //herererererpasta current change
       db.collection('messages').find({
-        username: req.user.local.username
+        'username': result[0].local.username
       }).toArray((err, messages) => {
+        console.log(uName, "The Rat Eats Cake");
         if (err) return console.log(err)
         //always check what is being passed
         res.render('profile.ejs', {
@@ -37,7 +36,7 @@ module.exports = function(app, passport, db, ObjectId) {
 
   //SYNTAX ERRORRRRRRRR AAAAAHAHAHAHAHHAHA
 
-  app.get('/profile/:username', isLoggedIn, function(req, res) {//to create a new get for specific user bein viewed by main viewer
+  app.get('/profile/:username', isLoggedIn, function(req, res) { //to create a new get for specific user bein viewed by main viewer
     //  Leon's Username material
 
     db.collection('users').find({
@@ -70,16 +69,10 @@ module.exports = function(app, passport, db, ObjectId) {
   //Maps ROUTES ================================================================
 
   app.get('/maps', isLoggedIn, function(req, res) {
-    console.log(req.params, "HumDiddly Dum Dum"); //params is an empty object {}
-    var uId = ObjectId(req.params.post_id)
-    // HEERRREEEEE
-    // db.collection('users').find({"_id": uId}).toArray((err, result) => {
-    //   console.log('THIS IS SPARTAAAAAAAAGSGAGGGAG',result[0])
-    //   if (err) return console.log(err)
-    //   uName = result[0].local.username
+    console.log(req.session, "HumDiddly Dum Dum"); //params is an empty object {}
+    var uId = ObjectId(req.session.passport.user)
 
-    db.collection('messages').find({
-      "_id": uId,
+    db.collection('messages').find({ //took out id only looking for 1 id
       location: {
         $near: {
           $maxDistance: 1000,
@@ -92,70 +85,126 @@ module.exports = function(app, passport, db, ObjectId) {
           }
         }
       }
-    }).toArray((err, messagesData) => { // put mongodb results into an array called messagesData
+    }).toArray((err, messages) => { // put mongodb results into an array called messagesData
       if (err) return console.log(err);
-      // convert messages result to the format expected by the map, similar to the format of stores from the tutorial
-      // create an object which looks like the stores object but will contain coordinates and message data from mongodb
+      console.log('LOOOOOOKKKK', messages)
+
       const mapResults = {
         "type": "FeatureCollection",
         "features": []
       };
-
-      // loop through each message in the messagesData array and create an object which will be pushed into the features array inside mapResults
-      messagesData.forEach(md => {
-        console.log("MD:", md.quote, md.name, "longitude:", md.location.coordinates[0], "latitue:", md.location.coordinates[1]);
-        console.log(mapResults.geometry)//Correct in terminal
+      //loop through each message in the messagesData array and create an object which will be pushed into the features array inside mapResults
+      messages.forEach(md => {
+        //  console.log("MD:", md.quote, md.name, "longitude:", md.location.coordinates[0], "latitue:", md.location.coordinates[1]);
+        //  console.log(mapResults.geometry)//Correct in terminal
         mapResults.features.push({
           "type": "Feature",
           "geometry": {
             "type": "Point",
-            "coordinates": [md.location.coordinates[0], md.location.coordinates[1]]
+            "coordinates": [ md.location.coordinates[0], md.location.coordinates[1] ]
           },
           "properties": {
             "message": md.quote,
-            "who": md.name,
-            "location": md.location.coordinates //why arent you working?
+            //"who": md.name,
+            //"location": md.location.coordinates //why arent you working?
           }
         });
       })
-      //console.log(mapResults, messagesData, " LOOOOOKK ATATATATAT EEMEMEMEME IM MISTER ME SEEEEEKKKSS")
-      console.log(messagesData.mapResults, "It is I the") //HERE
-      res.render('maps.ejs', {features: mapResults.features, geometry: mapResults.geometry, mapResults: mapResults })//HERE
-      //res.send(mapResults);
+      console.log(mapResults, "GAFAGAGHGH")
+      console.log(mapResults, messages, " LOOOOOKK ATATATATAT EEMEMEMEME IM MISTER ME SEEEEEKKKSS")
+      console.log(mapResults, "It is I the") //HERE
+      res.render('maps.ejs', {
+        features: mapResults.features,
+        geometry: mapResults.geometry,
+        mapResults: mapResults
+      }) //HERE
+
       res.end();
-      //res.connection.end()
-      // send the data from mongodb back to the fetch in json format
+
     })
+  }) //here
+
+
+  app.get('/mapsdata', isLoggedIn, function(req, res) {
+    console.log(req.session, "HumDiddly Dum Dum"); //params is an empty object {}
+    var uId = ObjectId(req.session.passport.user)
+
+    db.collection('messages').find({ //took out id only looking for 1 id
+      location: {
+        $near: {
+          $maxDistance: 1000,
+          $geometry: {
+            type: "Point",
+            // Replace hardcoded coordinates for actual req.location
+            //get user id of current user and submit their coordinates to the dom
+            //????? should the coordinates her be of the user or the coordinates that are being retrieved
+            coordinates: [42.3582, -71.0590]
+          }
+        }
+      }
+    }).toArray((err, messages) => { // put mongodb results into an array called messagesData
+      if (err) return console.log(err);
+      console.log('LOOOOOOKKKK', messages)
+
+      const mapResults = {
+        "type": "FeatureCollection",
+        "features": []
+      };
+      //loop through each message in the messagesData array and create an object which will be pushed into the features array inside mapResults
+      messages.forEach(md => {
+        //  console.log("MD:", md.quote, md.name, "longitude:", md.location.coordinates[0], "latitue:", md.location.coordinates[1]);
+        //  console.log(mapResults.geometry)//Correct in terminal
+        mapResults.features.push({
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [md.location.coordinates[1], md.location.coordinates[0]]
+          },
+          "properties": {
+            "message": md.quote,
+          //  "who": md.name,
+          //  "location": md.location.coordinates //why arent you working?
+          }
+        });
+      })
+      console.log(mapResults, "GAFAGAGHGH")
+      console.log(mapResults, messages, " LOOOOOKK ATATATATAT EEMEMEMEME IM MISTER ME SEEEEEKKKSS")
+      console.log(mapResults, "It is I the") //HERE
+      res.json(mapResults) //HERE
+      //sends to fetch,converts to json
+      res.end();
+
+    })
+    // })
+  });
+
+
+  //   app.post('/messages', isLoggedIn, (req, res) => {
+  //     // TO-DO parse from string to stringify
+  //     // if (req.body.bio !== undefined && req.body.name && req.body.quote){
+  //     let location = JSON.parse(req.body.locate);
+  //     //let location = JSON.parse(req.body.locate)
+  //     var uId = ObjectId(req.session.passport.user)
+  //     var uName
+  //     db.collection('users').find({"_id": uId}).toArray((err, result) => {
+  //       if (err) return console.log(err)
+  //     db.collection('messages').save({
+  //       bio: req.body.bio, //HERE HERE
+  //       name: req.body.name,
+  //       quote: req.body.quote,
+  //       username: req.user.local.username,
+  //       location: {
+  //         type: "Point",
+  //         coordinates: [location.lat, location.lon]
+  //       },
+  //       thumbUp: false
+  //     }, (err, result) => {
+  //       if (err) return console.log(err) //may be an error
+  //       //console.log('saved to database', result)
+  //       res.redirect('/profile')
+  //     })
+  //   })
   // })
-});
-
-
-//   app.post('/messages', isLoggedIn, (req, res) => {
-//     // TO-DO parse from string to stringify
-//     // if (req.body.bio !== undefined && req.body.name && req.body.quote){
-//     let location = JSON.parse(req.body.locate);
-//     //let location = JSON.parse(req.body.locate)
-//     var uId = ObjectId(req.session.passport.user)
-//     var uName
-//     db.collection('users').find({"_id": uId}).toArray((err, result) => {
-//       if (err) return console.log(err)
-//     db.collection('messages').save({
-//       bio: req.body.bio, //HERE HERE
-//       name: req.body.name,
-//       quote: req.body.quote,
-//       username: req.user.local.username,
-//       location: {
-//         type: "Point",
-//         coordinates: [location.lat, location.lon]
-//       },
-//       thumbUp: false
-//     }, (err, result) => {
-//       if (err) return console.log(err) //may be an error
-//       //console.log('saved to database', result)
-//       res.redirect('/profile')
-//     })
-//   })
-// })
 
 
   // Posting routes ===============================================================
@@ -169,45 +218,46 @@ module.exports = function(app, passport, db, ObjectId) {
     //let location = JSON.parse(req.body.locate)
     var uId = ObjectId(req.session.passport.user)
     var uName
-    db.collection('users').find({"_id": uId}).toArray((err, result) => {
+    db.collection('users').find({
+      "_id": uId
+    }).toArray((err, result) => {
       if (err) return console.log(err)
-    db.collection('messages').save({
-      bio: req.body.bio, //HERE HERE
-      name: req.body.name,
-      quote: req.body.quote,
-      username: req.user.local.username,
-      location: {
-        type: "Point",
-        coordinates: [location.lat, location.lon]
-      },
-      thumbUp: false
-    }, (err, result) => {
-      if (err) return console.log(err) //may be an error
-      //console.log('saved to database', result)
-      res.redirect('/profile')
-    })
-  })
-})
-
-  app.put('/messages', (req, res) => {
-    db.collection('messages')
-      .findOneAndUpdate({
+      uName = result[0].local.username
+      db.collection('messages').save({
         bio: req.body.bio, //HERE HERE
         name: req.body.name,
         quote: req.body.quote,
+        username: uName,
+        // uId     : req.session.passport.user //Here
         location: {
           type: "Point",
           coordinates: [location.lat, location.lon]
-        }
+        },
+        thumbUp: false
+      }, (err, result) => {
+        if (err) return console.log(err) //may be an error
+        //console.log('saved to database', result)
+        res.redirect('/profile')
+      })
+    })
+  })
+
+  app.put('/messages', (req, res) => {
+    
+    db.collection('messages')
+      .findOneAndUpdate({
+
+        quote: req.body.quote //HERE HERE
+
       }, {
         $set: {
-          thumbUp: req.body.thumbUp + 1
+          isSelected: req.body.isSelected
         }
       }, {
         sort: {
           _id: -1
         },
-        upsert: true
+        upsert: true //hwre
       }, (err, result) => {
         if (err) return res.send(err)
         res.send(result)
@@ -217,7 +267,7 @@ module.exports = function(app, passport, db, ObjectId) {
   app.delete('/messages', (req, res) => {
     db.collection('messages').findOneAndDelete({
       name: req.body.name,
-      msg: req.body.msg
+      quote: req.body.quote
     }, (err, result) => {
       if (err) return res.send(500, err)
       res.send('Message deleted!')

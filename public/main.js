@@ -1,68 +1,105 @@
-var thumbUp = document.getElementsByClassName("fa-thumbs-up");
-var thumbDown = document.getElementsByClassName("fa-thumbs-down");
-var trash = document.getElementsByClassName("fas fa-trash");
-var button = document.getElementById("queryBtn");
+var sun = document.getElementsByClassName("fa-sun");
+var msg = document.getElementsByClassName("message") //here
+//var sun = document.getElementsByClassName("fa-thumbs-down");
+var trash = document.getElementsByClassName("fa-trash"); //here!
+// var button = document.getElementById("queryBtn");
 
+Array.from(msg).forEach(function(element) {
 
-document.getElementById("queryBtn").addEventListener('click', function(){
-  const name = this.parentNode.parentNode.childNodes[1].innerText
-  const quote = this.parentNode.parentNode.childNodes[3].innerText
+  const isSelected = element.className.includes('selected')
+  const quote = element.getElementsByTagName("span")[1].innerText
+
   fetch('messages', {
-    method: 'put',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      'name': name,
-      'quote': quote,
-      'location':location
+      method: 'put',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        isSelected: !isSelected, //guarantee send opposite is sent to db
+        quote : quote
+      })
+    })
+    .then(response => {
+      if (response.ok) return response.json()
+    })
+    .then(data => {
+      console.log(data)
     })
   })
-  .then(response => {
-    if (response.ok) return response.json()
-  })
-  .then(data => {
-    console.log(data)
-    window.location.reload(true)
-  })
-});
 
-//making a fetch request to themessages route an d i need to send query parameters to app .get fetch sends query parameters
-Array.from(thumbDown).forEach(function(element) {
-      element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
-        fetch('thumbDown', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg,
-            'thumbUp':thumbUp
-          })
-        })
-        .then(response => {
-          if (response.ok) return response.json()
-        })
-        .then(data => {
-          console.log(data)
-          window.location.reload(true)
-        })
-      });
-});
+//   fetch('messages', {
+//     method: 'put',
+//     headers: {'Content-Type': 'application/json'},
+//     body: JSON.stringify({
+//       sun: 'stuff'
+//     })
+//   })
+//   .then(response => {
+//     if (response.ok) return response.json()
+//   })
+//   .then(data => {
+//     console.log(data)
+//   })
+// })
 
+// document.getElementById("queryBtn").addEventListener('click', function(){
+//   const name = this.parentNode.parentNode.childNodes[1].innerText
+//   const quote = this.parentNode.parentNode.childNodes[3].innerText
+//   fetch('messages', {
+//     method: 'put',
+//     headers: {'Content-Type': 'application/json'},
+//     body: JSON.stringify({
+//       'name': name,
+//       'quote': quote,
+//       'location':location
+//     })
+//   })
+//   .then(response => {
+//     if (response.ok) return response.json()
+//   })
+//   .then(data => {
+//     console.log(data)
+//     window.location.reload(true)
+//   })
+// });
+
+//trying to update by turning the icon red if the user clicks it to mark that message for posting later
+// Array.from(thumbUp).forEach(function(element) {
+//       element.addEventListener('click', function(){
+//         const name = this.parentNode.parentNode.childNodes[1].innerText
+//         const order = this.parentNode.parentNode.childNodes[3].innerText
+//         fetch('messages', {
+//           method: 'put',
+//           headers: {'Content-Type': 'application/json'},
+//           body: JSON.stringify({
+//             'name'   : name,
+//             'quote'  : quote,
+//             'thumbUp': true
+//           })
+//         })
+//         .then(response => {
+//           if (response.ok) return response.json()
+//         })
+//         .then(data => {
+//           console.log(data)
+//           window.location.reload(true)
+//         })
+//       });
+// });
+
+// LETS FIX THIS DELETE HONEY BUN!!!
 
 Array.from(trash).forEach(function(element) {
+
       element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
+        //const name = this.parentNode.parentNode.childNodes[1].innerText
+        const quote = this.parentNode.parentNode.childNodes[3].innerText
+
         fetch('messages', {
           method: 'delete',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            'name': name,
-            'msg': msg
+            quote : quote
           })
         }).then(function (response) {
           window.location.reload()
@@ -70,28 +107,47 @@ Array.from(trash).forEach(function(element) {
       });
 });
 
-Array.from(thumbDown).forEach(function(element) {
-      element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
-        fetch('thumbDown', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg,
-            'thumbUp':thumbUp
-          })
-        })
-        .then(response => {
-          if (response.ok) return response.json()
-        })
-        .then(data => {
-          console.log(data)
-          window.location.reload(true)
-        })
-      });
-});
+// SUN =====================
+
+// Array.from(sun).forEach(function(element) {
+//
+//       element.addEventListener('click', function(){
+//         alert("Success")
+//         fetch('thumbDown', {
+//           method: 'put',
+//           headers: {'Content-Type': 'application/json'},
+//           body: JSON.stringify({
+//             'sun': true
+//           })
+//         })
+//         .then(response => {
+//           if (response.ok) return response.json()
+//         })
+//         .then(data => {
+//           console.log(data)
+//           window.location.reload(true)
+//         })
+//       });
+// });
+
+// Array.from(trash).forEach(function(element) {
+//       element.addEventListener('click', function(){
+//         alert("big cousin taye")
+//         const name = this.parentNode.parentNode.childNodes[1].innerText
+//         const msg = this.parentNode.parentNode.childNodes[3].innerText
+//         fetch('messages', {
+//           method: 'delete',
+//           headers: {
+//             'Content-Type': 'application/json'
+//           },
+//           body: JSON.stringify({
+//             'quote': quote
+//           })
+//         }).then(function (response) {
+//           window.location.reload()
+//         })
+//       });
+// });
+
 
 //toggle to make box appear

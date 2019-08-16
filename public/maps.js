@@ -4,34 +4,87 @@ var map = new mapboxgl.Map({
   // container id specified in the HTML
   container: 'map',
   // style URL
-  style: 'mapbox://styles/mapbox/light-v10',
-  // initial position in [lon, lat] format
-  center: [-77.034084, 38.909671],
+  style: 'mapbox://styles/mapbox/streets-v11',
+  //initial position in [lon, lat] format
+  center: [ -71.0590, 42.3582],
+  // center: [-77.034084142948,
+  //         38.909671288923],
   // initial zoom
   zoom: 14
 });
 
 // Creating Icons============================================
 
+var storesTwo = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -71.0577994,
+          42.3569852
+        ]
+      },
+      "properties": {
+        "message": "Success is a foregone conclusion!",
+      }
+    }]
+  }
+
+
+var stores = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+        -71.0590,
+          42.3582
+        ]
+      },
+      "properties": {
+        "phoneFormatted": "(202) 234-7336",
+        "phone": "2022347336",
+        "address": "1471 P St NW",
+        "city": "Washington DC",
+        "country": "United States",
+        "crossStreet": "at 15th St NW",
+        "postalCode": "20005",
+        "state": "D.C.",
+        "message": "rubber duck"
+      }
+    }
+  ]
+};
+
+
 map.on('load', function(e) {
   // Add the data to your map as a layer
   //##### fetch(`/maps?lat=${location.coords.latitude}&lon=${location.coords.longitude}`)
 
-  fetch(`/maps`) //removed lat and long from fetch
+  fetch(`/mapsdata`) //gets raw data about JSON Object with dtata for all of the loc map box reads puts o map
+
     .then(results => {
-      return results.json
+      console.log("COVERTING To Json now?")
+      return results.json() //method
     })
-    .then(messagesData => {
-      console.log(layout.icon-image)
+    .then(mapResults => {
+      // console.log(layout.icon-image)
       console.log(mapResults)
-      console.log("JSON results from /nearbyMessages:", messagesData);
+      console.log("JSON results from /nearbyMessages:",JSON.stringify(mapResults));
       map.addLayer({
         id: 'locations',
         type: 'symbol',
         // Add a GeoJSON source containing place coordinates and information.
         source: {
           type: 'geojson',
-          data: mapResults // how can i define message data here? HERE
+          data: mapResults,
+          // data: mapResults,
+          buffer: 512// how can i define message data here? HERE
         },
         layout: {
           'icon-image': 'restaurant-15',
