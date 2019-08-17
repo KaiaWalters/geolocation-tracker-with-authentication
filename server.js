@@ -16,6 +16,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 //ADDED OBJECT ID AND REQUIRE
 var ObjectId = require('mongodb').ObjectID;
+// var multer = require('multer');
 var configDB = require('./config/database.js');
 
 var db

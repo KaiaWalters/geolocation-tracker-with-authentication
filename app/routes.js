@@ -206,6 +206,9 @@ module.exports = function(app, passport, db, ObjectId) {
   //   })
   // })
 
+//IMAGE CODE ==================================
+
+
 
   // Posting routes ===============================================================
   //KW Friday: changed post to help with geo location and message
@@ -233,7 +236,8 @@ module.exports = function(app, passport, db, ObjectId) {
           type: "Point",
           coordinates: [location.lat, location.lon]
         },
-        thumbUp: false
+        thumbUp: false,
+      
       }, (err, result) => {
         if (err) return console.log(err) //may be an error
         //console.log('saved to database', result)
@@ -243,7 +247,7 @@ module.exports = function(app, passport, db, ObjectId) {
   })
 
   app.put('/messages', (req, res) => {
-    
+
     db.collection('messages')
       .findOneAndUpdate({
 

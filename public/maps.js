@@ -76,6 +76,10 @@ map.on('load', function(e) {
       // console.log(layout.icon-image)
       console.log(mapResults)
       console.log("JSON results from /nearbyMessages:",JSON.stringify(mapResults));
+
+      map.loadImage('/img/note.png', function(error, image) {
+      if (error) throw error;
+      map.addImage('cat', image);
       map.addLayer({
         id: 'locations',
         type: 'symbol',
@@ -87,13 +91,16 @@ map.on('load', function(e) {
           buffer: 512// how can i define message data here? HERE
         },
         layout: {
-          'icon-image': 'restaurant-15',
-          'icon-allow-overlap': true,
+          "icon-image": "cat",
+          "icon-size": 0.05
+          // 'icon-image':'{marker-symbol}-15',
+          // 'icon-allow-overlap': true,
         }
 
 
       });
     });
+  })
 });
 
 //================================

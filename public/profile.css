@@ -41,7 +41,7 @@ h1 {
   background-color: rgb(170,218,255);
   bottom: 0;
   width: 100%;
-  height: 55vh;
+  height: 50%;
   margin: 15px 0 0 0;
   float: right;
 }
@@ -108,6 +108,7 @@ h1 {
 .userProfile form input{
   height: 10vh;
   width: 100%;
+  font-size: 20px;
 
 }
 
@@ -132,24 +133,48 @@ h1 {
   margin-right: 5px;
 }
 .userProfile form a{
+  border: 2px solid black;
+  padding: 3px;
+  border-radius: 5px;
   float: right;
-  margin-right:
+  text-decoration: none;
+  color: black;
+  font-size: 0.9em;
 }
 .userProfile li{
   border: 2px solid black;
   list-style: none;
-  overflow:auto;
-  width: 100%;
-  margin: 0 0 0 0;
-  padding: 5px 0 10px 0;
+  overflow: auto;
+  border-radius: 10px;
+  width: 95%;
+  margin: 20px 0 20px 0;
+  padding: 10px 10px 0px 10px;
 }
 .userProfile ul{
   width: 100%;
   margin: 0 0 30px 0;
   padding: 0 0 0 0;
 }
+.userProfile ul span:first-child{
+  margin: 0 0 10px 0;
+}
 .userProfile ul li span{
  display: block;
+ margin-bottom: 20px;
+}
+.userProfile ul li span i {
+  color: blue;
+  display: inline;
+  width: 33%;
+  margin-top: 20px;
+}
+.icon{
+  float:left;
+  width:11%;
+  margin-bottom: 10px;
+}
+.quote{
+  margin-bottom: 10px;
 }
 .userProfile section:first-of-type{
   border: 2px solid
